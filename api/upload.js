@@ -1,14 +1,22 @@
 const express = require("express");
 const multer = require("multer");
 const sharp = require("sharp");
+const path = require("path");
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 // Set up multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-app.use(express.json());
+// Serve the static files in the public directory
+app.use(express.static(path.join(__dirname, "../public")));
+
+// Serve the index.html file
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "index.html"));
+});
 
 // Handle file upload and conversion
 app.post("/api/upload", upload.single("image"), async (req, res) => {
@@ -55,6 +63,10 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
     console.error("Error during conversion:", error);
     res.status(500).send("An error occurred during conversion.");
   }
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
 
 module.exports = app;
