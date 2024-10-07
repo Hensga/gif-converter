@@ -17,23 +17,81 @@
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
       }
-      input,
+      input[type="file"],
       button {
-        margin: 5px 0;
+        margin: 10px 0;
+      }
+      .drop-area {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        background-color: #fafafa;
+        transition: background-color 0.3s;
+      }
+      .drop-area.dragover {
+        background-color: #e0e0e0;
+      }
+      #file-name {
+        margin-top: 10px;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <form action="/api/upload" method="POST" enctype="multipart/form-data">
+    <form action="/upload" method="POST" enctype="multipart/form-data">
       <h2>Upload an SVG or PNG to Convert to GIF</h2>
+      <p>
+        File will be resized to fit within a 400x160 canvas while keeping aspect
+        ratio.
+      </p>
+      <p>Transparent backgrounds will be converted to white.</p>
+      <div id="drop-area" class="drop-area">
+        Drag & Drop your file here or click to select
+      </div>
       <input
         type="file"
         name="image"
         accept="image/svg+xml, image/png"
         required
+        hidden
       />
+      <div id="file-name"></div>
       <button type="submit">Upload</button>
     </form>
+    <script>
+      const dropArea = document.getElementById('drop-area');
+      const fileInput = document.querySelector('input[name="image"]');
+      const fileNameDisplay = document.getElementById('file-name');
+      // Highlight the drop area when file is dragged over
+      dropArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropArea.classList.add('dragover');
+      });
+      dropArea.addEventListener('dragleave', () => {
+        dropArea.classList.remove('dragover');
+      });
+      // Handle file drop
+      dropArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropArea.classList.remove('dragover');
+        fileInput.files = e.dataTransfer.files; // Transfer dropped files to input
+        displayFileName(fileInput.files[0].name);
+      });
+      // Allow clicking on the drop area to select a file
+      dropArea.addEventListener('click', () => fileInput.click());
+
+      // Display file name when input changes
+      fileInput.addEventListener('change', () => {
+        displayFileName(fileInput.files[0].name);
+      });
+      // Function to display file name
+      function displayFileName(name) {
+        fileNameDisplay.textContent = \`Selected File: \${name}\`;
+      }
+    </script>
   </body>
 </html>
