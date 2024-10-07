@@ -2,7 +2,7 @@
   "name": "gif-converter",
   "version": "1.0.0",
   "description": "A simple tool to convert SVG and PNG files to GIF with a fixed canvas size.",
-  "main": "index.js",
+  "main": "api/upload.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <title>SVG/PNG to GIF Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        margin: 0;
+      }
+      form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      input,
+      button {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="/api/upload" method="POST" enctype="multipart/form-data">
+      <h2>Upload an SVG or PNG to Convert to GIF</h2>
+      <input
+        type="file"
+        name="image"
+        accept="image/svg+xml, image/png"
+        required
+      />
+      <button type="submit">Upload</button>
+    </form>
+  </body>
+</html>
